@@ -1142,7 +1142,7 @@ def OutputSmooth(options, audio_tracks, video_tracks):
             audio_tag = '65534'
             fourcc = 'EC-3'
             channels = str(channels)
-            data_rate = int(audio_track.info['sample_descriptions'][0]['dolby_digital_info']['data_rate'])
+            data_rate = int(audio_track.info['sample_descriptions'][0]['dolby_digital_plus_info']['data_rate'])
             packet_size = str(4*data_rate)
         else:
             # assume AAC
@@ -1200,10 +1200,11 @@ def OutputSmooth(options, audio_tracks, video_tracks):
             xml.SubElement(stream_index, "c", d=str(duration))
 
     if options.playready:
+        key_info = None
         if video_tracks:
             key_info = video_tracks[0].key_info
-            if not key_info and len(audio_tracks):
-                key_info = audio_tracks[0].key_info
+        if not key_info and len(audio_tracks):
+            key_info = audio_tracks[0].key_info
 
         if not key_info:
             return
